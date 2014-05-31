@@ -1,0 +1,99 @@
+// This program is Tetris game in assembly code;
+// I use stack to store the sistuation of bit(方塊);
+// Like : rectangular 
+//  *    **    **    **	  **	  **
+//  *     **  **     * 	   *	  **
+//  *			     * 	   *
+//  *
+//  _0-3 _4-7  _8-11 _12-15 _16-19 _20-23
+
+// Set two Matrix, both are 8*8 Matrix.
+// One is 表面, another is 背景.
+// ******** ........,63
+// ********
+// ********
+// ********
+// ********
+// ********
+// ********
+// ********  0,1,2,3....
+
+// We use R0 & stack to store "方塊中心點"
+// R1 存取 ROM 的位置，用在改變位置(下移、左右移動)
+
+ORG 00h
+interrupt 0  // reset
+interrupt 1  // In stady time, down the block.
+
+loop{
+
+Random:	
+	// Random bit
+	//Some body have code.
+	push 1  // Record the index of block.
+
+Up
+	// Check input_up have a value. Yes, check there have some spcae to turn block. No, next stage.
+	
+	mov a, pin1
+	jz a, right
+	JBC a,Check_up_space  // If push button was pushed, check space.
+	
+Check_up_space:
+	//pop index from stack...
+	pop a // This register store what's row the block is ?
+	pop b // This register store what's column the block is ?
+	pop 1.0 // This register store what's type of block is ?
+	
+	//Block1 is rectangular. Have 4 type.
+
+_0:	
+	// Set a matrix to repreant a block.
+	// Original 58H=1,59H=1,60H=1,61H=1
+	// 初始中心點在59H
+	pop R0
+	R0
+
+
+	// Use loop to do a AND-logic judgement with 
+
+	// Check input_right...
+
+	// Check input_left...
+
+	// Show screen.
+	// Print data by rows. From left to right.
+
+	// Block auto down && Test there have some space to put block
+
+BlockDown:
+	// Move THE POINT to next row.
+	INC R0
+	INC R0
+	INC R0
+	INC R0
+	INC R0
+	INC R0
+	INC R0
+	INC R0
+
+DownTest:
+	// Use loop to do a AND-logic judgement with 
+	// R0 store the value of potion of ROM.
+	Mov A,R0
+	
+	
+	AND A,(The point of Next row )
+	JB A,stop
+
+Stop:
+	//Show Screen
+
+CalculateScore:	
+	// Check any row is light ? Yes, the row is clear and move other //block. Push score to 7-segment LED. No, keep working.
+	
+
+	// Check game over ?
+	// Check 50H, 51H are light? Yes, game finished. No, LJMP Rand_Block
+}
+
